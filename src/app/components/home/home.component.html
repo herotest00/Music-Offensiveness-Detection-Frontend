@@ -1,0 +1,15 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <label for="name">URL: </label>
+    <input id="name" type="text" formControlName="url">
+    <button type="submit" [disabled]="!form.valid" >Search</button>
+    <p *ngIf="offensiveness else errorMessage">
+        videoOffensiveness: {{offensiveness.videoOffensiveness}}<br>
+        textOffensiveness {{offensiveness.textOffensiveness}}
+    </p>
+    <ng-template #errorMessage> 
+        <p>
+            {{formErrorMessage}}
+        </p>
+    </ng-template>
+</form>
