@@ -1,10 +1,20 @@
-export class Offensiveness {
+export interface Offensiveness {
 
-    textOffensiveness: number;
-    videoOffensiveness: number;
+    videoOffensiveness: {
+        score: number;
+        images: Image[];
+    };
+    audioOffensiveness: {
+        score: number;
+        text: Text[];
+    };
+}
 
-    constructor(textOffensiveness: number, videoOffensiveness: number) {
-        this.textOffensiveness = textOffensiveness;
-        this.videoOffensiveness = videoOffensiveness;
-    }
+export interface Image {
+    image: string;
+}
+  
+export interface Text {
+    text: string;
+    offensive: boolean;
 }

@@ -1,15 +1,27 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-    <label for="name">URL: </label>
+    <label for="name">URL</label>
     <input id="name" type="text" formControlName="url">
-    <button type="submit" [disabled]="!form.valid" >Search</button>
+    <button type="submit" [disabled]="!form.valid" class="inline-element">Search</button>
+    <div *ngIf="form.get('url')!.hasError('invalidFormat') && form.get('url')!.touched && form.get('url')!.dirty">
+        Invalid URL format.
+    </div>
+    <mat-progress-spinner *ngIf="showProgressSpinner" mode="indeterminate" class="inline-element" [diameter]="40"></mat-progress-spinner>
     <p *ngIf="offensiveness else errorMessage">
-        videoOffensiveness: {{offensiveness.videoOffensiveness}}<br>
-        textOffensiveness {{offensiveness.textOffensiveness}}
+        video offensiveness: {{offensiveness.videoOffensiveness.score.toFixed(2)}}<br>
+        text offensiveness {{offensiveness.audioOffensiveness.score.toFixed(2)}}
     </p>
     <ng-template #errorMessage> 
         <p>
             {{formErrorMessage}}
         </p>
     </ng-template>
+    <ng-image-slider *ngIf="detectedImages != null" [images]="detectedImages" [slideImage]=4 #nav></ng-image-slider>
+    <ul>
+        <li *ngFor="let lyric of offensiveness?.audioOffensiveness?.text">
+            <span [ngStyle]="lyric.offensive ? {'color': 'red'} : {}">
+                {{lyric.text}}
+            </span>
+        </li>
+    </ul>
 </form>
