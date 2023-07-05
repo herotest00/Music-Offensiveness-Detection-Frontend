@@ -1,0 +1,31 @@
+.container {
+    position: relative;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 4px;
+    width: 500px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+p {
+    font-size: 18px;
+    color: #666;
+}
+
+.close-btn {
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+}

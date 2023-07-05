@@ -9,7 +9,7 @@ export class ValidationService {
   isValidFormat(regex: RegExp) {
     return (control: AbstractControl) => {
       const isValid = regex.test(control.value);
-      return isValid ? null : { invalidFormat: { valid: false } };
+      return isValid || control.value == '' ? null : { invalidFormat: { valid: false } };
     };
   }
 

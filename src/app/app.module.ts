@@ -8,12 +8,17 @@ import { HomeComponent } from './components/home/home.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgImageSliderModule } from 'ng-image-slider';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { APP_BASE_HREF } from '@angular/common';
+import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { YouTubePlayerModule } from '@angular/youtube-player';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    ErrorDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -21,9 +26,11 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     HttpClientModule,
     ReactiveFormsModule,
     NgImageSliderModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule,
+    YouTubePlayerModule
   ],
-  providers: [],
+  providers: [{provide: APP_BASE_HREF, useValue: '/home'}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

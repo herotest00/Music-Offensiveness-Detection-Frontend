@@ -1,22 +1,19 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-
-    <label for="name">URL</label>
-    <input id="name" type="text" formControlName="url">
-    <button type="submit" [disabled]="!form.valid" class="inline-element">Search</button>
-    <div *ngIf="form.get('url')!.hasError('invalidFormat') && form.get('url')!.touched && form.get('url')!.dirty">
-        Invalid URL format.
+    <div class="form-group">
+        <label for="name">YouTube URL</label>
+        <input id="name" type="text" formControlName="url">
+        <button type="submit" [disabled]="!form.valid || showProgressSpinner" class="inline-element">Search</button>
+        <mat-progress-spinner *ngIf="showProgressSpinner" mode="indeterminate" class="inline-element" [diameter]="40"></mat-progress-spinner>
     </div>
-    <mat-progress-spinner *ngIf="showProgressSpinner" mode="indeterminate" class="inline-element" [diameter]="40"></mat-progress-spinner>
-    <p *ngIf="offensiveness else errorMessage">
-        video offensiveness: {{offensiveness.videoOffensiveness.score.toFixed(2)}}<br>
-        text offensiveness {{offensiveness.audioOffensiveness.score.toFixed(2)}}
+    <p *ngIf="form.get('url')!.hasError('invalidFormat') && form.get('url')!.touched && form.get('url')!.dirty">
+        Invalid URL format.
     </p>
-    <ng-template #errorMessage> 
-        <p>
-            {{formErrorMessage}}
-        </p>
-    </ng-template>
-    <ng-image-slider *ngIf="detectedImages != null" [images]="detectedImages" [slideImage]=4 #nav></ng-image-slider>
+    <youtube-player *ngIf="videoId != null" videoId={{videoId}}></youtube-player>
+    <div *ngIf="offensiveness">
+        <p class="highlighted-text">Video offensiveness: <span [style.color]="getOffensivenessColor(offensiveness!.videoOffensiveness.score)">{{offensiveness!.videoOffensiveness.score.toFixed(2)}}</span>
+        <p class="highlighted-text">Text offensiveness: <span [style.color]="getOffensivenessColor(offensiveness!.audioOffensiveness.score)">{{offensiveness!.audioOffensiveness.score.toFixed(2)}}</span>
+    </div>      
+    <ng-image-slider *ngIf="detectedImages != null" [images]="detectedImages" [imageSize]='{width: 400, height: 400}' #nav></ng-image-slider>
     <ul>
         <li *ngFor="let lyric of offensiveness?.audioOffensiveness?.text">
             <span [ngStyle]="lyric.offensive ? {'color': 'red'} : {}">

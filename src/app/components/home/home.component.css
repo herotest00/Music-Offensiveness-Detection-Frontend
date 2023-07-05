@@ -1,31 +1,50 @@
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    background-color: #FFF;
+    border-radius: 15px;
 }
 
 label {
     font-size: 18px;
     font-weight: bold;
-    margin-right: 10px;
+    display: block;
+    margin-bottom: 10px;
 }
 
 input {
-    width: 25%;
-    padding: 8px 14px;
-    margin: 8px 10px;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
     box-sizing: border-box;
-    font-size: 18px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 20px;
 }
 
 button {
-    background-color: grey;
-    border-radius: 20px;
+    background-color: #4CAF50; 
+    border: none;
     color: white;
-    padding: 8px 14px;
-    margin: 0px 12px 5px 0px; 
-    font-size: 18px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
     cursor: pointer;
+    border-radius: 4px;
+    transition-duration: 0.4s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 
 .inline-element {
@@ -33,10 +52,39 @@ button {
     vertical-align: middle;
     width: 100px;
     height: 40px;
+    margin-left: 10px;
 }
 
-button:disabled {
-    background-color: lightgrey;
-    color: darkgrey;
-    cursor: not-allowed;
+.ng-image-slider {
+    width: 100%;
+    margin-top: 20px;
+}
+
+ul {
+    padding: 0;
+    margin-top: 20px;
+}
+
+li {
+    list-style-type: none;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+youtube-player {
+    display: flex;
+    justify-content: center;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.highlighted-text {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
 }
