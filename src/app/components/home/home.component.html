@@ -5,7 +5,7 @@
         <button type="submit" [disabled]="!form.valid || showProgressSpinner" class="inline-element">Search</button>
         <mat-progress-spinner *ngIf="showProgressSpinner" mode="indeterminate" class="inline-element" [diameter]="40"></mat-progress-spinner>
     </div>
-    <p *ngIf="form.get('url')!.hasError('invalidFormat') && form.get('url')!.touched && form.get('url')!.dirty">
+    <p *ngIf="form.get('url')!.hasError('invalidFormat') && form.get('url')!.touched && form.get('url')!.dirty" style="color: red;">
         Invalid URL format.
     </p>
     <youtube-player *ngIf="videoId != null" videoId={{videoId}}></youtube-player>

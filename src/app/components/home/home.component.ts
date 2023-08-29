@@ -3,10 +3,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomApiError } from 'src/app/models/api-error';
 import { Offensiveness } from 'src/app/models/offensiveness';
-import { OffensivenessForUrlResponse } from 'src/app/models/offensiveness-for-url-response';
-import { Service } from 'src/app/services/service.service';
+import { OffensivenessService } from 'src/app/services/offensiveness-service.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
@@ -18,7 +18,6 @@ export class HomeComponent implements OnInit {
 
   private _youtubeRegExp: RegExp = /((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?/;
   private _serverErrorMessage = "The request could not be processed. Please try again later."
-  private _youtubeApiLoaded: boolean = false;
 
   offensiveness: Offensiveness | null = null;
   detectedImages: Array<object> | null = null;
@@ -30,29 +29,13 @@ export class HomeComponent implements OnInit {
   });
 
 
-  constructor(private _service: Service, private _validation_service: ValidationService, private _dialog: MatDialog) {}
+  constructor(private _offensiveness_service: OffensivenessService, private _validation_service: ValidationService, private _dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.form.get('url')!.valueChanges.subscribe(newValue => {
-      this._onUrlChange(newValue);
-  });
-    this._service.offensivenessForUrlResponse.subscribe({
-      next: (data: OffensivenessForUrlResponse) => {
-        if (!data.error) {
-          this._loadData(data.offensiveness!)
-        }
-        else {
-          this._handleErrorResponse(data.error!);
-        }
-      }
-    })
-
-    if (!this._youtubeApiLoaded) {
-      const tag = document.createElement('script');
-      tag.src = "https://www.youtube.com/iframe_api";
-      document.body.appendChild(tag);
-      this._youtubeApiLoaded = true;
-    }
+      this._extractVideoId(newValue);
+    });
+    this._loadYoutubeScript();
   }
 
   onSubmit() {
@@ -60,10 +43,17 @@ export class HomeComponent implements OnInit {
     this.detectedImages = null;
 
     this.showProgressSpinner = true;
-    this._service.getOffensivenessForUrl(this.form.get("url")!.value!);
+    this._offensiveness_service.getOffensivenessForUrl(this.form.get('url')!.value!).subscribe({
+      next: (data: Offensiveness) => {
+          this._loadData(data);
+      },
+      error: (error: HttpErrorResponse) => {
+          this._handleErrorResponse(error.error!);
+      }
+    });
   }
 
-  private _onUrlChange(url: string | null) {
+  private _extractVideoId(url: string | null) {
     this.videoId = null;
     if (this.form.get('url')!.valid && url != null && url != "") {
       const match = url.match(this._youtubeRegExp);
@@ -98,6 +88,12 @@ export class HomeComponent implements OnInit {
     const green = Math.round((1 - factor) * 255);
     const red = Math.round(factor * 255);
     return `rgb(${red}, ${green}, 0)`;
+  }
+
+  private _loadYoutubeScript() {
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
   }
 
 }

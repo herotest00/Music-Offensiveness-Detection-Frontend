@@ -12,10 +12,10 @@ export class ConfigurationService {
   private _configuration = new Subject<Configuration>;
 
   constructor(private _httpClient: HttpClient) { 
-    this.loadConfig();
+    this._loadConfig();
   }
 
-  loadConfig() {
+  private _loadConfig() {
     this._httpClient.get<Configuration>(this._configUrl).subscribe({
       next: (config) => {
         this._configuration.next(config);
